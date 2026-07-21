@@ -1,23 +1,29 @@
 require("dotenv").config();
-const express= require("express");
+const express = require("express");
 const connectDB = require("./config/db");
+
 // Import Routes
 const userRoutes = require("./routes/userRoutes");
+const itemRoutes = require("./routes/itemRoutes");
 
-const app=express();
-app.use(express.json());
-//connect to MongoDB
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Connect to MongoDB
 connectDB();
-//Home route
-app.get("/",(req, res)=>{
-    res.send("Backend is running successfully!");
+
+// Middleware
+app.use(express.json());
+
+// Routes
+app.get("/", (req, res) => {
+  res.send("Backend is running successfully!");
 });
-app.use("/api/users", userRoutes); 
-//start the server
-const PORT=process.env.PORT || 5000;
 
+app.use("/api/users", userRoutes);
+app.use("/api/items", itemRoutes);
 
-app.listen(PORT, ()=>{
-    console.log(`Server is running on http://localhost:${PORT}`);
-
+// Start Server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
