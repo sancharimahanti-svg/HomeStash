@@ -1,0 +1,223 @@
+import { useState } from 'react';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+
+function AddItem() {
+  const [form, setForm] = useState({
+    name: '',
+    category: '',
+    quantity: '',
+    unit: '',
+    expiryDate: '',
+    lowStockThreshold: 2,
+  });
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+
+  // Why one handler for all fields?
+  // Instead of writing onChange for each field separately,
+  // we use the field's "name" attribute to update the right value
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async () => {
+    if (!form.name || !form.category || !form.quantity || !form.unit || !form.expiryDate) {
+      toast.error('Please fill all fields');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await axios.post('/api/items', form, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      toast.success('Item added successfully!');
+      navigate('/items');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to add item');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div style={styles.container}>
+
+      {/* Navbar */}
+      <div style={styles.navbar}>
+        <h2 style={styles.logo}>🏠 HomeStash</h2>
+        <button style={styles.backBtn} onClick={() => navigate('/dashboard')}>
+          ← Back to Dashboard
+        </button>
+      </div>
+
+      {/* Form */}
+      <div style={styles.content}>
+        <h1 style={styles.heading}>➕ Add New Item</h1>
+
+        <div style={styles.card}>
+
+          {/* Item Name */}
+          <div style={styles.field}>
+            <label style={styles.label}>Item Name</label>
+            <input
+              style={styles.input}
+              name="name"
+              placeholder="e.g. Rice, Milk, Sugar"
+              value={form.name}
+              onChange={handleChange}
+            />
+          </div>
+
+          {/* Category */}
+          <div style={styles.field}>
+            <label style={styles.label}>Category</label>
+            <select
+              style={styles.input}
+              name="category"
+              value={form.category}
+              onChange={handleChange}
+            >
+              <option value="">Select category</option>
+              <option value="dairy">Dairy</option>
+              <option value="grains">Grains</option>
+              <option value="snacks">Snacks</option>
+              <option value="beverages">Beverages</option>
+              <option value="vegetables">Vegetables</option>
+              <option value="fruits">Fruits</option>
+              <option value="meat">Meat</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          {/* Quantity + Unit side by side */}
+          <div style={styles.row}>
+            <div style={{ ...styles.field, flex: 1 }}>
+              <label style={styles.label}>Quantity</label>
+              <input
+                style={styles.input}
+                name="quantity"
+                type="number"
+                placeholder="e.g. 2"
+                value={form.quantity}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div style={{ ...styles.field, flex: 1 }}>
+              <label style={styles.label}>Unit</label>
+              <select
+                style={styles.input}
+                name="unit"
+                value={form.unit}
+                onChange={handleChange}
+              >
+                <option value="">Select unit</option>
+                <option value="kg">kg</option>
+                <option value="g">g</option>
+                <option value="litre">litre</option>
+                <option value="ml">ml</option>
+                <option value="pieces">pieces</option>
+                <option value="packets">packets</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Expiry Date */}
+          <div style={styles.field}>
+            <label style={styles.label}>Expiry Date</label>
+            <input
+              style={styles.input}
+              name="expiryDate"
+              type="date"
+              value={form.expiryDate}
+              onChange={handleChange}
+            />
+          </div>
+
+          {/* Low Stock Threshold */}
+          <div style={styles.field}>
+            <label style={styles.label}>
+              Low Stock Alert When Quantity ≤
+            </label>
+            <input
+              style={styles.input}
+              name="lowStockThreshold"
+              type="number"
+              value={form.lowStockThreshold}
+              onChange={handleChange}
+            />
+          </div>
+
+          <button
+            style={styles.button}
+            onClick={handleSubmit}
+            disabled={loading}
+          >
+            {loading ? 'Adding...' : '➕ Add Item'}
+          </button>
+
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const styles = {
+  container: { minHeight: '100vh', backgroundColor: '#0f172a' },
+  navbar: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '16px 32px',
+    backgroundColor: '#1e293b',
+    borderBottom: '1px solid #334155',
+  },
+  logo: { color: '#ffffff', margin: 0 },
+  backBtn: {
+    padding: '8px 16px',
+    borderRadius: '8px',
+    border: '1px solid #334155',
+    backgroundColor: 'transparent',
+    color: '#94a3b8',
+    cursor: 'pointer',
+  },
+  content: { padding: '32px', maxWidth: '600px', margin: '0 auto' },
+  heading: { color: '#ffffff', marginBottom: '24px' },
+  card: {
+    backgroundColor: '#1e293b',
+    padding: '32px',
+    borderRadius: '12px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
+  },
+  field: { display: 'flex', flexDirection: 'column', gap: '8px' },
+  row: { display: 'flex', gap: '16px' },
+  label: { color: '#94a3b8', fontSize: '14px' },
+  input: {
+    padding: '12px 16px',
+    borderRadius: '8px',
+    border: '1px solid #334155',
+    backgroundColor: '#0f172a',
+    color: '#ffffff',
+    fontSize: '16px',
+    outline: 'none',
+  },
+  button: {
+    padding: '12px',
+    borderRadius: '8px',
+    border: 'none',
+    backgroundColor: '#14b8a6',
+    color: '#ffffff',
+    fontSize: '16px',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    marginTop: '8px',
+  },
+};
+
+export default AddItem;
