@@ -6,7 +6,7 @@ import Dashboard from './pages/Dashboard';
 import AddItem from './pages/AddItem';
 import Items from './pages/Items';
 import Alerts from './pages/Alerts';
-
+import EditItem from './pages/EditItem';
 
 function App() {
   return (
@@ -20,6 +20,7 @@ function App() {
         <Route path="/add-item" element={<AddItem />} />
         <Route path="/items" element={<Items />}/>
         <Route path="/Alerts" element={<Alerts />}/>
+         <Route path="/edit-item/:id" element={<EditItem />} />
       </Routes>
     </Router>
   );

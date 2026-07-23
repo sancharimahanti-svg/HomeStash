@@ -127,15 +127,21 @@ function Items() {
                   </div>
                 </div>
 
-                {/* Actions */}
-                <div style={styles.cardActions}>
-                  <button
-                    style={styles.deleteBtn}
-                    onClick={() => handleDelete(item._id)}
-                  >
-                    🗑️ Delete
-                  </button>
-                </div>
+    {/* Actions */}
+    <div style={styles.cardActions}>
+        <button
+        style={styles.editBtn}
+        onClick={() => navigate(`/edit-item/${item._id}`)}
+  >
+    ✏️ Edit
+  </button>
+  <button
+    style={styles.deleteBtn}
+    onClick={() => handleDelete(item._id)}
+  >
+    🗑️ Delete
+  </button>
+</div>
 
               </div>
             ))}
@@ -205,15 +211,14 @@ const styles = {
   detailLabel: { color: '#64748b', fontSize: '14px' },
   detailValue: { color: '#94a3b8', fontSize: '14px' },
   cardActions: { display: 'flex', justifyContent: 'flex-end' },
-  deleteBtn: {
-    padding: '6px 12px',
-    borderRadius: '6px',
-    border: 'none',
-    backgroundColor: '#1e293b',
-    color: '#ef4444',
-    cursor: 'pointer',
-    border: '1px solid #ef4444',
-  },
+  editBtn: {
+  padding: '6px 12px',
+  borderRadius: '6px',
+  border: '1px solid #14b8a6',
+  backgroundColor: 'transparent',
+  color: '#14b8a6',
+  cursor: 'pointer',
+},
 };
 
 export default Items;
