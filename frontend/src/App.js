@@ -7,7 +7,7 @@ import AddItem from './pages/AddItem';
 import Items from './pages/Items';
 import Alerts from './pages/Alerts';
 import EditItem from './pages/EditItem';
-
+import ProtectedRoute from './components/ProtectedRoute';
 function App() {
   return (
     <Router>
@@ -16,11 +16,21 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/add-item" element={<AddItem />} />
-        <Route path="/items" element={<Items />}/>
-        <Route path="/Alerts" element={<Alerts />}/>
-         <Route path="/edit-item/:id" element={<EditItem />} />
+        <Route path="/dashboard" element={
+          <ProtectedRoute><Dashboard /></ProtectedRoute>
+        } />
+        <Route path="/add-item" element={
+          <ProtectedRoute><AddItem /></ProtectedRoute>
+        } />
+        <Route path="/items" element={
+          <ProtectedRoute><Items /></ProtectedRoute>
+        } />
+        <Route path="/alerts" element={
+          <ProtectedRoute><Alerts /></ProtectedRoute>
+        } />
+        <Route path="/edit-item/:id" element={
+          <ProtectedRoute><EditItem /></ProtectedRoute>
+        } />
       </Routes>
     </Router>
   );
