@@ -17,7 +17,7 @@ function Login() {
 
     try {
       setLoading(true);
-      const res = await axios.post('/api/users/login', { email, password });
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/login`, { email, password });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
       toast.success('Login successful!');

@@ -67,7 +67,7 @@ function Dashboard() {
         <div style={styles.cards}>
           <div style={styles.card}>
             <p style={styles.cardLabel}>Total Items</p>
-            <h2 style={styles.cardValue}>{items.length}</h2>
+            <h2 style={styles.cardValue}>{items?.length}</h2>
           </div>
 
           <div style={{ ...styles.card, borderColor: '#ef4444' }}>
