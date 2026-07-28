@@ -89,6 +89,12 @@ function AddItem() {
               <option value="vegetables">Vegetables</option>
               <option value="fruits">Fruits</option>
               <option value="meat">Meat</option>
+              <option value="oils">Oils</option>
+              <option value="masala">Masala & Spices</option>
+              <option value="pulses">Pulses & Lentils</option>
+
+              <option value="frozen">Frozen</option>
+              <option value="cleaning">Cleaning</option>
               <option value="other">Other</option>
             </select>
           </div>
@@ -167,43 +173,52 @@ function AddItem() {
 }
 
 const styles = {
-  container: { minHeight: '100vh', backgroundColor: '#0f172a' },
+  container: { minHeight: '100vh', backgroundColor: '#f5ece0' },
   navbar: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '16px 32px',
-    backgroundColor: '#1e293b',
-    borderBottom: '1px solid #334155',
+    backgroundColor: '#fdf8f3',
+    borderBottom: '1px solid #e8d5c0',
   },
-  logo: { color: '#ffffff', margin: 0 },
+  logo: { color: '#2c1a0e', margin: 0 },
   backBtn: {
     padding: '8px 16px',
     borderRadius: '8px',
-    border: '1px solid #334155',
+    border: '1px solid #e8d5c0',
     backgroundColor: 'transparent',
-    color: '#94a3b8',
+    color: '#9c7b5a',
     cursor: 'pointer',
   },
-  content: { padding: '32px', maxWidth: '600px', margin: '0 auto' },
-  heading: { color: '#ffffff', marginBottom: '24px' },
+  content: {
+    padding: '32px',
+    maxWidth: '600px',
+    margin: '0 auto',
+    backgroundImage: 'radial-gradient(circle at 1px 1px, #d4b896 1px, transparent 0)',
+    backgroundSize: '16px 16px',
+    minHeight: 'calc(100vh - 65px)',
+  },
+  heading: { color: '#2c1a0e', marginBottom: '24px' },
   card: {
-    backgroundColor: '#1e293b',
+    backgroundColor: '#fdf8f3',
     padding: '32px',
     borderRadius: '12px',
     display: 'flex',
     flexDirection: 'column',
     gap: '20px',
+    border: '1px solid #e8d5c0',
+    boxShadow: '0 1px 4px rgba(124,74,30,0.08)',
   },
   field: { display: 'flex', flexDirection: 'column', gap: '8px' },
   row: { display: 'flex', gap: '16px' },
-  label: { color: '#94a3b8', fontSize: '14px' },
+  label: { color: '#9c7b5a', fontSize: '14px' },
   input: {
     padding: '12px 16px',
     borderRadius: '8px',
-    border: '1px solid #334155',
-    backgroundColor: '#0f172a',
-    color: '#ffffff',
+    border: '1px solid #e8d5c0',
+    backgroundColor: '#f5ece0',
+    color: '#2c1a0e',
     fontSize: '16px',
     outline: 'none',
   },
@@ -211,8 +226,8 @@ const styles = {
     padding: '12px',
     borderRadius: '8px',
     border: 'none',
-    backgroundColor: '#14b8a6',
-    color: '#ffffff',
+    backgroundColor: '#7c4a1e',
+    color: '#fdf8f3',
     fontSize: '16px',
     fontWeight: 'bold',
     cursor: 'pointer',

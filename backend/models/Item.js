@@ -10,7 +10,7 @@ const itemSchema = new mongoose.Schema(
 
     category: {
       type: String,
-      enum: ["dairy", "grains", "snacks", "beverages", "vegetables", "fruits", "meat", "other"],
+      enum: ["dairy", "grains", "snacks", "beverages", "vegetables", "fruits", "meat", "oils", "masala", "pulses", "frozen", "cleaning", "other"],
       required: [true, "Category is required"],
     },
 
