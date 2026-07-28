@@ -73,28 +73,28 @@ function Dashboard() {
           <div style={{ ...styles.card, borderColor: '#ef4444' }}>
             <p style={styles.cardLabel}>Expired</p>
             <h2 style={{ ...styles.cardValue, color: '#ef4444' }}>
-              {alerts.expired?.length || 0}
+              {alerts?.expired?.length || 0}
             </h2>
           </div>
 
           <div style={{ ...styles.card, borderColor: '#f59e0b' }}>
             <p style={styles.cardLabel}>Near Expiry</p>
             <h2 style={{ ...styles.cardValue, color: '#f59e0b' }}>
-              {alerts.near_expiry?.length || 0}
+              {alerts?.near_expiry?.length || 0}
             </h2>
           </div>
 
           <div style={{ ...styles.card, borderColor: '#f59e0b' }}>
             <p style={styles.cardLabel}>Low Stock</p>
             <h2 style={{ ...styles.cardValue, color: '#f59e0b' }}>
-              {alerts.low_stock?.length || 0}
+              {alerts?.low_stock?.length || 0}
             </h2>
           </div>
 
           <div style={{ ...styles.card, borderColor: '#ef4444' }}>
             <p style={styles.cardLabel}>Out of Stock</p>
             <h2 style={{ ...styles.cardValue, color: '#ef4444' }}>
-              {alerts.out_of_stock?.length || 0}
+              {alerts?.out_of_stock?.length || 0}
             </h2>
           </div>
         </div>
@@ -113,7 +113,7 @@ function Dashboard() {
         </div>
 
         {/* Recent Alerts Preview */}
-        {alerts.expired?.length > 0 && (
+        {alerts?.expired?.length > 0 && (
           <div style={styles.alertBox}>
             <h3 style={styles.alertTitle}>⚠️ Expired Items</h3>
             {alerts.expired.map(item => (
@@ -125,7 +125,7 @@ function Dashboard() {
           </div>
         )}
 
-        {alerts.near_expiry?.length > 0 && (
+        {alerts?.near_expiry?.length > 0 && (
           <div style={{ ...styles.alertBox, borderColor: '#f59e0b' }}>
             <h3 style={styles.alertTitle}>⏰ Expiring Soon</h3>
             {alerts.near_expiry.map(item => (
