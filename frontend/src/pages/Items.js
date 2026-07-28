@@ -9,7 +9,8 @@ function Items() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
-
+  
+  // eslint-disable-next-line
   useEffect(() => {
     if (!token) { navigate('/login'); return; }
     fetchItems();

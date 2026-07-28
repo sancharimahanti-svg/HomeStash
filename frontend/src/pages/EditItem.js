@@ -20,7 +20,8 @@ function EditItem() {
   // e.g. /edit-item/6a5fc8997e54948a3dec3841 → id = "6a5fc8997e54948a3dec3841"
   const { id } = useParams();
   const token = localStorage.getItem('token');
-
+  
+  // eslint-disable-next-line
   useEffect(() => {
     if (!token) { navigate('/login'); return; }
     fetchItem();

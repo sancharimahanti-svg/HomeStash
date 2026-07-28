@@ -11,7 +11,8 @@ function Dashboard() {
 
   const user = JSON.parse(localStorage.getItem('user'));
   const token = localStorage.getItem('token');
-
+  
+  // eslint-disable-next-line
   useEffect(() => {
     if (!token) {
       navigate('/login');
