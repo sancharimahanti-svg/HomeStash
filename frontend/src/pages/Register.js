@@ -18,6 +18,7 @@ function Register() {
 
     try {
       setLoading(true);
+      console.log("API URL:", process.env.REACT_APP_API_URL);
       const res = await axios.post( `${process.env.REACT_APP_API_URL}/api/users/register`, { name, email, password });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
