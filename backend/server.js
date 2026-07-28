@@ -1,21 +1,23 @@
 require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 const connectDB = require("./config/db");
-
-// Import Routes
 const userRoutes = require("./routes/userRoutes");
 const itemRoutes = require("./routes/itemRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Connect to MongoDB
 connectDB();
 
-// Middleware
+// CORS - allow frontend to talk to backend
+app.use(cors({
+  origin: ["http://localhost:3000", "https://home-stash-one.vercel.app/"],
+  credentials: true,
+}));
+
 app.use(express.json());
 
-// Routes
 app.get("/", (req, res) => {
   res.send("Backend is running successfully!");
 });
@@ -23,7 +25,6 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRoutes);
 app.use("/api/items", itemRoutes);
 
-// Start Server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
