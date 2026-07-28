@@ -18,7 +18,7 @@ function Register() {
 
     try {
       setLoading(true);
-      const res = await axios.post('/api/users/register', { name, email, password });
+      const res = await axios.post( `${process.env.REACT_APP_API_URL}/api/users/register`, { name, email, password });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
       toast.success('Account created!');
