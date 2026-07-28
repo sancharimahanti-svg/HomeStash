@@ -12,7 +12,7 @@ connectDB();
 
 // CORS - allow frontend to talk to backend
 app.use(cors({
-  origin: ["http://localhost:3000", "https://home-stash-one.vercel.app/"],
+  origin: ["http://localhost:3000", "https://home-stash-one.vercel.app"],
   credentials: true,
 }));
 
