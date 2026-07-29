@@ -31,7 +31,9 @@ function AddItem() {
 
     try {
       setLoading(true);
-      await axios.post('/api/items', form, {
+      await axios.post(
+  `${process.env.REACT_APP_API_URL}/api/items`,
+  form, {
         headers: { Authorization: `Bearer ${token}` },
       });
       toast.success('Item added successfully!');
