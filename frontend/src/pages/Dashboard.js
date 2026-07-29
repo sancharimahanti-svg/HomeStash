@@ -26,9 +26,15 @@ function Dashboard() {
       const config = { headers: { Authorization: `Bearer ${token}` } };
 
       const [itemsRes, alertsRes] = await Promise.all([
-        axios.get('/api/items', config),
-        axios.get('/api/items/alerts', config),
-      ]);
+  axios.get(
+    `${process.env.REACT_APP_API_URL}/api/items`,
+    config
+  ),
+  axios.get(
+    `${process.env.REACT_APP_API_URL}/api/items/alerts`,
+    config
+  ),
+]);
 
       setItems(itemsRes.data.items);
       setAlerts(alertsRes.data.alerts);
