@@ -18,9 +18,14 @@ function Items() {
 
   const fetchItems = async () => {
     try {
-      const res = await axios.get('/api/items', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await axios.get(
+  `${process.env.REACT_APP_API_URL}/api/items`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
       setItems(res.data.items);
     } catch (error) {
       toast.error('Failed to load items');
@@ -88,9 +93,9 @@ function Items() {
 
       {/* Content */}
       <div style={styles.content}>
-        <h1 style={styles.heading}>📦 All Items ({items.length})</h1>
+        <h1 style={styles.heading}>📦 All Items ({items?.length ||0})</h1>
 
-        {items.length === 0 ? (
+        {(items?.length ||0) === 0 ? (
           <div style={styles.empty}>
             <p>No items yet! Add your first item.</p>
             <button style={styles.addBtn} onClick={() => navigate('/add-item')}>
