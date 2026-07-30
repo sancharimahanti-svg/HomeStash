@@ -110,6 +110,9 @@ function Dashboard() {
           <button style={styles.actionBtn} onClick={() => navigate('/alerts')}>
             🚩 View Alerts
           </button>
+          <button style={styles.actionBtn} onClick={() => navigate('/analytics')}>
+            📊 Analytics
+          </button>
         </div>
 
         {/* Recent Alerts Preview */}

@@ -8,6 +8,7 @@ import Items from './pages/Items';
 import Alerts from './pages/Alerts';
 import EditItem from './pages/EditItem';
 import ProtectedRoute from './components/ProtectedRoute';
+import Analytics from './pages/Analytics';
 function App() {
   return (
     <Router>
@@ -30,6 +31,9 @@ function App() {
         } />
         <Route path="/edit-item/:id" element={
           <ProtectedRoute><EditItem /></ProtectedRoute>
+        } />
+        <Route path="/analytics" element={
+          <ProtectedRoute><Analytics /></ProtectedRoute>
         } />
       </Routes>
     </Router>
