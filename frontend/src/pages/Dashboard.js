@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../api/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
@@ -26,14 +26,8 @@ function Dashboard() {
       const config = { headers: { Authorization: `Bearer ${token}` } };
 
       const [itemsRes, alertsRes] = await Promise.all([
-  axios.get(
-    `${process.env.REACT_APP_API_URL}/api/items`,
-    config
-  ),
-  axios.get(
-    `${process.env.REACT_APP_API_URL}/api/items/alerts`,
-    config
-  ),
+  axiosInstance.get('/api/items',config),
+  axiosInstance.get('/api/items/alerts',config),
 ]);
 
       setItems(itemsRes.data.items);
