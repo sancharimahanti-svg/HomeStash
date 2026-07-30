@@ -12,7 +12,7 @@ const autoFillItem = async (req, res) => {
       return res.status(400).json({ message: "Item name is required" });
     }
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
     const prompt = `You are a helpful kitchen assistant. Given the item name "${itemName}", suggest the following details in JSON format only, no extra text, no markdown, no backticks:
     {
