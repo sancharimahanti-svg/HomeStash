@@ -37,9 +37,14 @@ function Items() {
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this item?')) return;
     try {
-      await axios.delete(`/api/items/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.delete(
+  `${process.env.REACT_APP_API_URL}/api/items/${id}`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
       toast.success('Item deleted!');
       fetchItems();   // refresh list
     } catch (error) {

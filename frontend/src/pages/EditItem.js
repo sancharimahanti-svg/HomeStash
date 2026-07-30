@@ -29,9 +29,12 @@ function EditItem() {
 
   const fetchItem = async () => {
     try {
-      const res = await axios.get(`/api/items/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await axios.get(
+  `${process.env.REACT_APP_API_URL}/api/items/${id}`,
+  {
+    headers: { Authorization: `Bearer ${token}` },
+  }
+);
 
       const item = res.data.item;
 
@@ -67,9 +70,13 @@ function EditItem() {
 
     try {
       setSaving(true);
-      await axios.put(`/api/items/${id}`, form, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.put(
+  `${process.env.REACT_APP_API_URL}/api/items/${id}`,
+  form,
+  {
+    headers: { Authorization: `Bearer ${token}` },
+  }
+);
       toast.success('Item updated!');
       navigate('/items');
     } catch (error) {

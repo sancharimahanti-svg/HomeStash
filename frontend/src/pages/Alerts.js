@@ -23,9 +23,14 @@ function Alerts() {
 
   const fetchAlerts = async () => {
     try {
-      const res = await axios.get('/api/items/alerts', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await axios.get(
+  `${process.env.REACT_APP_API_URL}/api/items/alerts`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
       setAlerts(res.data.alerts);
     } catch (error) {
       toast.error('Failed to load alerts');
@@ -35,10 +40,10 @@ function Alerts() {
   };
 
   const totalAlerts =
-    alerts.expired.length +
-    alerts.near_expiry.length +
-    alerts.low_stock.length +
-    alerts.out_of_stock.length;
+  (alerts?.expired?.length || 0) +
+  (alerts?.near_expiry?.length || 0) +
+  (alerts?.low_stock?.length || 0) +
+  (alerts?.out_of_stock?.length || 0);
 
   if (loading) return <div style={styles.loading}>Loading...</div>;
 
