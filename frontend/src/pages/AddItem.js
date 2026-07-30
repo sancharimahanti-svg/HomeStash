@@ -15,6 +15,7 @@ function AddItem() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
+  const [autoFilling, setAutoFilling] = useState(false);
 
   // Why one handler for all fields?
   // Instead of writing onChange for each field separately,
@@ -22,6 +23,31 @@ function AddItem() {
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+  const handleAutoFill = async () => {
+  if (!form.name) {
+    toast.error('Enter item name first!');
+    return;
+  }
+  try {
+    setAutoFilling(true);
+    const res = await axiosInstance.post('/api/ai/autofill',
+      { itemName: form.name },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    setForm(prev => ({
+      ...prev,
+      category: res.data.category,
+      unit: res.data.unit,
+      expiryDate: res.data.expiryDate,
+      lowStockThreshold: res.data.lowStockThreshold,
+    }));
+    toast.success('Fields auto-filled by AI! ✨');
+  } catch (error) {
+    toast.error('AI fill failed, fill manually');
+  } finally {
+    setAutoFilling(false);
+  }
+};
 
   const handleSubmit = async () => {
     if (!form.name || !form.category || !form.quantity || !form.unit || !form.expiryDate) {
@@ -60,17 +86,26 @@ function AddItem() {
 
         <div style={styles.card}>
 
-          {/* Item Name */}
-          <div style={styles.field}>
-            <label style={styles.label}>Item Name</label>
-            <input
-              style={styles.input}
-              name="name"
-              placeholder="e.g. Rice, Milk, Sugar"
-              value={form.name}
-              onChange={handleChange}
-            />
-          </div>
+          {/* Item Name + Auto Fill */}
+       <div style={styles.field}>
+        <label style={styles.label}>Item Name</label>
+        <div style={styles.nameRow}>
+        <input
+          style={{ ...styles.input, flex: 1 }}
+          name="name"
+          placeholder="e.g. Rice, Milk, Sugar"
+          value={form.name}
+          onChange={handleChange}
+        />
+        <button
+          style={styles.autoFillBtn}
+          onClick={handleAutoFill}
+          disabled={autoFilling || !form.name}
+        >
+          {autoFilling ? '⏳' : '✨ Auto Fill'}
+        </button>
+      </div>
+    </div>
 
           {/* Category */}
           <div style={styles.field}>
@@ -233,6 +268,22 @@ const styles = {
     cursor: 'pointer',
     marginTop: '8px',
   },
+  nameRow: {
+  display: 'flex',
+  gap: '8px',
+  alignItems: 'center',
+},
+autoFillBtn: {
+  padding: '12px 16px',
+  borderRadius: '8px',
+  border: 'none',
+  backgroundColor: '#2c1a0e',
+  color: '#fdf8f3',
+  fontSize: '14px',
+  fontWeight: 'bold',
+  cursor: 'pointer',
+  whiteSpace: 'nowrap',
+},
 };
 
 export default AddItem;
