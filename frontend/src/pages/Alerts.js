@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../api/axiosInstance';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
@@ -23,14 +23,9 @@ function Alerts() {
 
   const fetchAlerts = async () => {
     try {
-      const res = await axios.get(
-  `${process.env.REACT_APP_API_URL}/api/items/alerts`,
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-);
+      const res = await axiosInstance.get('/api/items/alerts', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setAlerts(res.data.alerts);
     } catch (error) {
       toast.error('Failed to load alerts');
