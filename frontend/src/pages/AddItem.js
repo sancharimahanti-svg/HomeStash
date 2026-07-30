@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../api/axiosInstance';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
@@ -31,11 +31,9 @@ function AddItem() {
 
     try {
       setLoading(true);
-      await axios.post(
-  `${process.env.REACT_APP_API_URL}/api/items`,
-  form, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axiosInstance.post('/api/items', form, {
+  headers: { Authorization: `Bearer ${token}` },
+});
       toast.success('Item added successfully!');
       navigate('/items');
     } catch (error) {
