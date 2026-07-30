@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../api/axiosInstance';
 import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -29,8 +29,7 @@ function EditItem() {
 
   const fetchItem = async () => {
     try {
-      const res = await axios.get(
-  `${process.env.REACT_APP_API_URL}/api/items/${id}`,
+      const res = await axiosInstance.get('/api/items/${id}',
   {
     headers: { Authorization: `Bearer ${token}` },
   }
@@ -70,9 +69,7 @@ function EditItem() {
 
     try {
       setSaving(true);
-      await axios.put(
-  `${process.env.REACT_APP_API_URL}/api/items/${id}`,
-  form,
+      await axiosInstance.put('/api/items/${id}',form,
   {
     headers: { Authorization: `Bearer ${token}` },
   }
