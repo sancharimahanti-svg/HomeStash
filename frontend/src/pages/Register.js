@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../api/axiosInstance';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,7 +19,7 @@ function Register() {
     try {
       setLoading(true);
       console.log("API URL:", process.env.REACT_APP_API_URL);
-      const res = await axios.post( `${process.env.REACT_APP_API_URL}/api/users/register`, { name, email, password });
+      const res = await axiosInstance.post('/api/users/register', { name, email, password });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
       toast.success('Account created!');

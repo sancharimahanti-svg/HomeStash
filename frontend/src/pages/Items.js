@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../api/axiosInstance';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
@@ -18,8 +18,7 @@ function Items() {
 
   const fetchItems = async () => {
     try {
-      const res = await axios.get(
-  `${process.env.REACT_APP_API_URL}/api/items`,
+      const res = await axiosInstance.get('/api/items',
   {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -37,8 +36,7 @@ function Items() {
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this item?')) return;
     try {
-      await axios.delete(
-  `${process.env.REACT_APP_API_URL}/api/items/${id}`,
+      await axiosInstance.delete('/api/items/${id}',
   {
     headers: {
       Authorization: `Bearer ${token}`,
