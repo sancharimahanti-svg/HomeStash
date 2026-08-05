@@ -52,5 +52,55 @@ const autoFillItem = async (req, res) => {
     return res.status(500).json({ message: "AI service error", error: error.message });
   }
 };
+const generateShoppingList = async (req, res) => {
+  const { items } = req.body;
 
-module.exports = { autoFillItem };
+  if (!items || items.length === 0) {
+    return res.status(400).json({ message: "No items provided" });
+  }
+
+  try {
+    const itemsList = items.map(i => 
+      `${i.name} (${i.quantity} ${i.unit} left, threshold: ${i.lowStockThreshold})`
+    ).join(", ");
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-3.6-flash',
+      contents: `You are a smart grocery assistant. Based on these low/out of stock items: ${itemsList}
+      
+      Generate a shopping list in JSON format only, no extra text:
+      {
+        "shoppingList": [
+          {
+            "name": "item name",
+            "quantity": suggested quantity to buy as number,
+            "unit": "unit",
+            "reason": "why to buy this"
+          }
+        ],
+        "summary": "a friendly one line summary"
+      }`,
+    });
+
+    const text = response.text.trim()
+      .replace(/```json/g, '')
+      .replace(/```/g, '')
+      .trim();
+
+    const parsed = JSON.parse(text);
+    res.status(200).json(parsed);
+
+  } catch (error) {
+    console.error("Shopping List Error:", error.message);
+
+    if (error?.status === 429 || error?.message?.includes("429")) {
+      return res.status(429).json({
+        message: "Rate limit reached. Please wait and try again."
+      });
+    }
+
+    return res.status(500).json({ message: "AI service error" });
+  }
+};
+
+module.exports = { autoFillItem, generateShoppingList  };

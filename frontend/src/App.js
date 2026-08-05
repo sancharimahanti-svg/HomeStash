@@ -9,6 +9,7 @@ import Alerts from './pages/Alerts';
 import EditItem from './pages/EditItem';
 import ProtectedRoute from './components/ProtectedRoute';
 import Analytics from './pages/Analytics';
+import ShoppingList from './pages/ShoppingList';
 function App() {
   return (
     <Router>
@@ -35,6 +36,9 @@ function App() {
         <Route path="/analytics" element={
           <ProtectedRoute><Analytics /></ProtectedRoute>
         } />
+        <Route path="/shopping-list" element={
+          <ProtectedRoute><ShoppingList /></ProtectedRoute>
+}         />
       </Routes>
     </Router>
   );
