@@ -26,6 +26,12 @@ const itemSchema = new mongoose.Schema(
       required: [true, "Unit is required"],
     },
 
+    price: {
+      type: Number,
+      required: [true, "Price is required"],
+      min: [0, "Price cannot be negative"],
+    },
+
     expiryDate: {
       type: Date,
       required: [true, "Expiry date is required"],

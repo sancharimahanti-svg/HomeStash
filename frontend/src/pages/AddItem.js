@@ -9,6 +9,7 @@ function AddItem() {
     category: '',
     quantity: '',
     unit: '',
+    price: '',
     expiryDate: '',
     lowStockThreshold: 2,
   });
@@ -50,7 +51,7 @@ function AddItem() {
 };
 
   const handleSubmit = async () => {
-    if (!form.name || !form.category || !form.quantity || !form.unit || !form.expiryDate) {
+    if (!form.name || !form.category || !form.quantity || !form.unit || !form.price||!form.expiryDate) {
       toast.error('Please fill all fields');
       return;
     }
@@ -165,6 +166,21 @@ function AddItem() {
                 <option value="packets">packets</option>
               </select>
             </div>
+          </div>
+
+          {/* Price */}
+            <div style={styles.field}>
+              <label style={styles.label}>Price per Unit (₹)</label>
+              <input
+              style={styles.input}
+              name="price"
+              type="number"
+              min="0"
+              step="0.01"
+              placeholder="e.g. 120"
+              value={form.price}
+              onChange={handleChange}
+              />
           </div>
 
           {/* Expiry Date */}
