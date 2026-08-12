@@ -4,7 +4,7 @@ const Item = require("../models/Item");
 // @route   POST /api/items
 const addItem = async (req, res) => {
   try {
-    const { name, category, quantity, unit, expiryDate, lowStockThreshold } = req.body;
+    const { name, category, quantity, unit,price, expiryDate, lowStockThreshold } = req.body;
 
     if (!name || !category || quantity === undefined || !unit || !expiryDate) {
       return res.status(400).json({ message: "Please fill all fields" });
@@ -15,6 +15,7 @@ const addItem = async (req, res) => {
       category,
       quantity,
       unit,
+      price,
       expiryDate,
       lowStockThreshold,
       owner: req.user._id,
