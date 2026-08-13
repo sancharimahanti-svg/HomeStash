@@ -34,21 +34,15 @@ function Items() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Delete this item?')) return;
-    try {
-      await axiosInstance.delete('/api/items/${id}',
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  if (!window.confirm('Delete this item?')) return;
+  try {
+    await axiosInstance.delete(`/api/items/${id}`);
+    toast.success('Item deleted!');
+    fetchItems();
+  } catch (error) {
+    toast.error('Failed to delete');
   }
-);
-      toast.success('Item deleted!');
-      fetchItems();   // refresh list
-    } catch (error) {
-      toast.error('Failed to delete');
-    }
-  };
+};
 
   // Why a separate function for badge color?
   // Status can be 5 different values — cleaner to handle in one place

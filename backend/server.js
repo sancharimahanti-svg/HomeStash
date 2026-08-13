@@ -1,32 +1,23 @@
-require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const dotenv = require("dotenv");
 const connectDB = require("./config/db");
-const userRoutes = require("./routes/userRoutes");
-const itemRoutes = require("./routes/itemRoutes");
-const aiRoutes = require("./routes/aiRoutes");
 
-const app = express();
-const PORT = process.env.PORT || 5000;
-
+dotenv.config();
 connectDB();
 
-// CORS - allow frontend to talk to backend
-app.use(cors({
-  origin: ["http://localhost:3000", "https://home-stash-one.vercel.app"],
-  credentials: true,
-}));
+const app = express();
 
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json());
-app.use("/api/ai", aiRoutes);
 
-app.get("/", (req, res) => {
-  res.send("Backend is running successfully!");
-});
+// Routes
+app.use("/api/users", require("./routes/userRoutes"));
+app.use("/api/items", require("./routes/itemRoutes"));
+app.use("/api/expenses", require("./routes/expenseRoutes"));
+app.use("/api/household", require("./routes/householdRoutes"));
 
-app.use("/api/users", userRoutes);
-app.use("/api/items", itemRoutes);
+app.get("/", (req, res) => res.json({ message: "HomeStash API running" }));
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

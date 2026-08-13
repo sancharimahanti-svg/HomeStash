@@ -10,7 +10,10 @@ const itemSchema = new mongoose.Schema(
 
     category: {
       type: String,
-      enum: ["dairy", "grains", "snacks", "beverages", "vegetables", "fruits", "meat", "oils", "masala", "pulses", "frozen", "cleaning", "other"],
+      lowercase: true,
+      enum: ["dairy", "grains", "snacks", "beverages", "vegetables",
+             "fruits", "meat", "oils", "masala", "pulses",
+             "frozen", "cleaning", "other"],
       required: [true, "Category is required"],
     },
 
@@ -39,21 +42,26 @@ const itemSchema = new mongoose.Schema(
 
     lowStockThreshold: {
       type: Number,
-      default: 2,    // flag as low stock when quantity <= 2
+      default: 2,
     },
 
-    owner: {
+    // changed from owner → household (shared)
+    household: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Household",
+      required: true,
+    },
+
+    // track who added it
+    addedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
-// Virtual field — computed automatically, not stored in DB
 itemSchema.virtual("status").get(function () {
   const today = new Date();
   const threeDaysFromNow = new Date();
@@ -66,10 +74,7 @@ itemSchema.virtual("status").get(function () {
   return "good";
 });
 
-// Make virtuals show up in JSON responses
 itemSchema.set("toJSON", { virtuals: true });
 itemSchema.set("toObject", { virtuals: true });
 
-const Item = mongoose.model("Item", itemSchema);
-
-module.exports = Item;
+module.exports = mongoose.model("Item", itemSchema);

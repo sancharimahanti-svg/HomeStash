@@ -21,7 +21,7 @@ function Login() {
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
       toast.success('Login successful!');
-      navigate('/dashboard');
+      navigate(res.data.user.household ? '/dashboard' : '/household-setup');
     } catch (error) {
       toast.error(error.response?.data?.message || 'Login failed');
     } finally {

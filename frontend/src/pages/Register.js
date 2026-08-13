@@ -23,7 +23,7 @@ function Register() {
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
       toast.success('Account created!');
-      navigate('/dashboard');
+      navigate(res.data.user.household ? '/dashboard' : '/household-setup');
     } catch (error) {
       toast.error(error.response?.data?.message || 'Registration failed');
     } finally {

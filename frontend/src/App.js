@@ -10,6 +10,9 @@ import EditItem from './pages/EditItem';
 import ProtectedRoute from './components/ProtectedRoute';
 import Analytics from './pages/Analytics';
 import ShoppingList from './pages/ShoppingList';
+import HouseholdSetup from './pages/HouseholdSetup';
+import Members from './pages/Members';
+
 function App() {
   return (
     <Router>
@@ -38,7 +41,14 @@ function App() {
         } />
         <Route path="/shopping-list" element={
           <ProtectedRoute><ShoppingList /></ProtectedRoute>
-}         />
+        } />
+        <Route path="/household-setup" element={
+          <ProtectedRoute><HouseholdSetup /></ProtectedRoute>
+        } />
+        <Route path="/members" element={
+          <ProtectedRoute><Members /></ProtectedRoute>
+        } />
+
       </Routes>
     </Router>
   );
