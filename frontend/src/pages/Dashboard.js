@@ -147,6 +147,9 @@ function Dashboard() {
           <button style={styles.actionBtn} onClick={() => navigate('/analytics')}>
             📊 Analytics
           </button>
+          <button style={styles.actionBtn} onClick={() => navigate('/expenses')}>
+            🧾 Expenses
+          </button>
           <button style={styles.actionBtn} onClick={() => navigate('/shopping-list')}>
             🛒 Shopping List
           </button>
