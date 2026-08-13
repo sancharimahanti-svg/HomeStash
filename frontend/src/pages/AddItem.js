@@ -49,26 +49,57 @@ function AddItem() {
     setAutoFilling(false);
   }
 };
+// Map item category to expense category
+const categoryMap = {
+  dairy: 'groceries',
+  grains: 'groceries',
+  snacks: 'groceries',
+  beverages: 'groceries',
+  vegetables: 'groceries',
+  fruits: 'groceries',
+  meat: 'groceries',
+  oils: 'groceries',
+  masala: 'groceries',
+  pulses: 'groceries',
+  frozen: 'groceries',
+  cleaning: 'other',
+  other: 'other',
+};
 
   const handleSubmit = async () => {
-    if (!form.name || !form.category || !form.quantity || !form.unit || !form.price||!form.expiryDate) {
-      toast.error('Please fill all fields');
-      return;
-    }
+  if (!form.name || !form.category || !form.quantity || !form.unit || !form.price || !form.expiryDate) {
+    toast.error('Please fill all fields');
+    return;
+  }
 
-    try {
-      setLoading(true);
-      await axiosInstance.post('/api/items', form, {
-  headers: { Authorization: `Bearer ${token}` },
-});
-      toast.success('Item added successfully!');
-      navigate('/items');
-    } catch (error) {
-      toast.error(error.response?.data?.message || 'Failed to add item');
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    setLoading(true);
+
+    // 1. Add the item
+    await axiosInstance.post('/api/items', form, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    // 2. Auto-create an expense from the item price
+    const totalCost = parseFloat(form.price) * parseFloat(form.quantity);
+    await axiosInstance.post('/api/expenses', {
+      title: `${form.name} (${form.quantity} ${form.unit})`,
+      amount: totalCost,
+      category: categoryMap[form.category] || 'groceries',
+      date: new Date().toISOString().split('T')[0],
+      notes: `Auto-logged from item: ${form.name}`,
+    }, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    toast.success(`Item added! ₹${totalCost.toLocaleString('en-IN')} logged as expense ✅`);
+    navigate('/items');
+  } catch (error) {
+    toast.error(error.response?.data?.message || 'Failed to add item');
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div style={styles.container}>
