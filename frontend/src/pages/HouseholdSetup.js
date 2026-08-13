@@ -20,7 +20,7 @@ const HouseholdSetup = () => {
       }, { headers: { Authorization: `Bearer ${token}` } });
       toast.success("Household created!");
       // refresh user in localStorage then go to dashboard
-      const me = await axiosInstance.get("/api/users/me", {
+      const me = await axiosInstance.get("/api/users/profile", {
         headers: { Authorization: `Bearer ${token}` }
       });
       localStorage.setItem('user', JSON.stringify(me.data.user));
@@ -40,7 +40,7 @@ const HouseholdSetup = () => {
         inviteCode: inviteCode.trim().toUpperCase(),
       }, { headers: { Authorization: `Bearer ${token}` } });
       toast.success("Joined household!");
-      const me = await axiosInstance.get("/api/users/me", {
+      const me = await axiosInstance.get("/api/users/profile", {
         headers: { Authorization: `Bearer ${token}` }
       });
       localStorage.setItem('user', JSON.stringify(me.data.user));
