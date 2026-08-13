@@ -1,5 +1,4 @@
 const User = require("../models/User");
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const generateToken = (userId) => {
@@ -25,13 +24,8 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ message: "Email already registered" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = await User.create({
-      name,
-      email,
-      password: hashedPassword,
-    });
+    // ✅ don't hash manually — the model pre('save') hook handles it
+    const user = await User.create({ name, email, password });
 
     res.status(201).json({
       message: "User registered successfully",
@@ -41,7 +35,7 @@ const registerUser = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role || 'member',
-        household: user.household || null,  // ← added
+        household: user.household || null,
       },
     });
   } catch (error) {
@@ -60,13 +54,13 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ message: "Please fill all fields" });
     }
 
-    // populate household so frontend gets full info
     const user = await User.findOne({ email }).select("+password");
     if (!user) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    // ✅ use the model's comparePassword method
+    const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
@@ -79,7 +73,7 @@ const loginUser = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role || 'member',
-        household: user.household || null,  // ← added
+        household: user.household || null,
       },
     });
   } catch (error) {
