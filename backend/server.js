@@ -16,6 +16,7 @@ app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/items", require("./routes/itemRoutes"));
 app.use("/api/expenses", require("./routes/expenseRoutes"));
 app.use("/api/household", require("./routes/householdRoutes"));
+app.use("/api/ai", require("./routes/aiRoutes")); 
 
 app.get("/", (req, res) => res.json({ message: "HomeStash API running" }));
 
