@@ -1,26 +1,30 @@
 import { useState } from "react";
 import axiosInstance from "../api/axiosInstance";
-import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const HouseholdSetup = () => {
-  const { setUser } = useAuth();
   const [mode, setMode] = useState(null); // "create" | "join"
   const [householdName, setHouseholdName] = useState("");
   const [inviteCode, setInviteCode] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token');
 
   const handleCreate = async () => {
     if (!householdName.trim()) return toast.error("Enter a household name");
     setLoading(true);
     try {
-      const { data } = await axiosInstance.post("/api/household/create", {
+      await axiosInstance.post("/api/household/create", {
         name: householdName,
-      });
+      }, { headers: { Authorization: `Bearer ${token}` } });
       toast.success("Household created!");
-      // refresh user so household + role are updated
-      const me = await axiosInstance.get("/api/users/me");
-      setUser(me.data.user);
+      // refresh user in localStorage then go to dashboard
+      const me = await axiosInstance.get("/api/users/me", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      localStorage.setItem('user', JSON.stringify(me.data.user));
+      navigate('/dashboard');
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to create household");
     } finally {
@@ -34,10 +38,13 @@ const HouseholdSetup = () => {
     try {
       await axiosInstance.post("/api/household/join", {
         inviteCode: inviteCode.trim().toUpperCase(),
-      });
+      }, { headers: { Authorization: `Bearer ${token}` } });
       toast.success("Joined household!");
-      const me = await axiosInstance.get("/api/users/me");
-      setUser(me.data.user);
+      const me = await axiosInstance.get("/api/users/me", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      localStorage.setItem('user', JSON.stringify(me.data.user));
+      navigate('/dashboard');
     } catch (err) {
       toast.error(err.response?.data?.message || "Invalid invite code");
     } finally {
@@ -45,6 +52,7 @@ const HouseholdSetup = () => {
     }
   };
 
+  // ... all your styles stay exactly the same
   const containerStyle = {
     minHeight: "100vh",
     background: "#fdf6ed",

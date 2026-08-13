@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import axiosInstance from "../api/axiosInstance";
-import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 
 const Members = () => {
-  const { user } = useAuth();
+  const user = JSON.parse(localStorage.getItem('user'));
+  const token = localStorage.getItem('token');
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+
   const [household, setHousehold] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -12,7 +14,7 @@ const Members = () => {
 
   const fetchHousehold = async () => {
     try {
-      const { data } = await axiosInstance.get("/api/household");
+      const { data } = await axiosInstance.get("/api/household", config);
       setHousehold(data.household);
     } catch (err) {
       toast.error("Failed to load household");
@@ -26,7 +28,7 @@ const Members = () => {
   const handleRemove = async (userId, name) => {
     if (!window.confirm(`Remove ${name} from the household?`)) return;
     try {
-      await axiosInstance.delete(`/api/household/members/${userId}`);
+      await axiosInstance.delete(`/api/household/members/${userId}`, config);
       toast.success(`${name} removed`);
       fetchHousehold();
     } catch (err) {
@@ -37,7 +39,7 @@ const Members = () => {
   const handleLeave = async () => {
     if (!window.confirm("Are you sure you want to leave this household?")) return;
     try {
-      await axiosInstance.post("/api/household/leave");
+      await axiosInstance.post("/api/household/leave", {}, config);
       toast.success("You left the household");
       window.location.reload();
     } catch (err) {
@@ -50,6 +52,7 @@ const Members = () => {
     toast.success("Invite code copied!");
   };
 
+  // all styles stay exactly the same
   const pageStyle = {
     padding: "32px",
     maxWidth: "700px",
