@@ -12,6 +12,7 @@ import Analytics from './pages/Analytics';
 import ShoppingList from './pages/ShoppingList';
 import HouseholdSetup from './pages/HouseholdSetup';
 import Members from './pages/Members';
+import Expenses from './pages/Expenses';
 
 function App() {
   return (
@@ -48,6 +49,9 @@ function App() {
         <Route path="/members" element={
           <ProtectedRoute><Members /></ProtectedRoute>
         } />
+        <Route path="/expenses" element={
+          <ProtectedRoute><Expenses /></ProtectedRoute>
+}         />
 
       </Routes>
     </Router>
