@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -14,12 +15,34 @@ import HouseholdSetup from './pages/HouseholdSetup';
 import Members from './pages/Members';
 import Expenses from './pages/Expenses';
 
+// ← add this component
+const RedirectToLanding = () => {
+  useEffect(() => {
+    window.location.href = '/landing.html';
+  }, []);
+
+  return (
+    <div style={{
+      minHeight: '100vh',
+      backgroundColor: '#f5ece0',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: '18px',
+      color: '#7c4a1e',
+      fontFamily: 'Inter, sans-serif',
+    }}>
+      🏠 Loading HomeStash...
+    </div>
+  );
+};
+
 function App() {
   return (
     <Router>
       <Toaster position="top-right" />
       <Routes>
-        <Route path="/" element={<Navigate to="/landing.html" replace />} />
+        <Route path="/" element={<RedirectToLanding />} /> {/* ← changed */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={
@@ -51,8 +74,7 @@ function App() {
         } />
         <Route path="/expenses" element={
           <ProtectedRoute><Expenses /></ProtectedRoute>
-}         />
-
+        } />
       </Routes>
     </Router>
   );
