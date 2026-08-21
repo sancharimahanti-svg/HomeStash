@@ -169,4 +169,23 @@ const leaveHousehold = async (req, res) => {
   }
 };
 
-module.exports = { createHousehold, joinHousehold, getHousehold, removeMember, leaveHousehold };
+const deleteHousehold = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Only admin can delete household" });
+    }
+
+    await User.updateMany(
+      { household: req.user.household },
+      { household: null, role: "member" }
+    );
+
+    await Household.findByIdAndDelete(req.user.household);
+    res.status(200).json({ message: "Household deleted" });
+  } catch (error) {
+    console.error("Delete Household Error:", error.message);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = { createHousehold, joinHousehold, getHousehold, removeMember, leaveHousehold, deleteHousehold };

@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import axiosInstance from "../api/axiosInstance";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Members = () => {
   const user = JSON.parse(localStorage.getItem('user'));
   const token = localStorage.getItem('token');
   const config = { headers: { Authorization: `Bearer ${token}` } };
+  const navigate = useNavigate();
 
   const [household, setHousehold] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -40,10 +42,26 @@ const Members = () => {
     if (!window.confirm("Are you sure you want to leave this household?")) return;
     try {
       await axiosInstance.post("/api/household/leave", {}, config);
+      // clear household from localStorage
+      const updatedUser = { ...user, household: null, role: 'member' };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
       toast.success("You left the household");
-      window.location.reload();
+      navigate('/household-setup');
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to leave");
+    }
+  };
+
+  const handleDeleteHousehold = async () => {
+    if (!window.confirm("Are you sure? This will DELETE the household and remove ALL members. This cannot be undone!")) return;
+    try {
+      await axiosInstance.delete("/api/household", config);
+      const updatedUser = { ...user, household: null, role: 'member' };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      toast.success("Household deleted");
+      navigate('/household-setup');
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to delete household");
     }
   };
 
@@ -52,7 +70,6 @@ const Members = () => {
     toast.success("Invite code copied!");
   };
 
-  // all styles stay exactly the same
   const pageStyle = {
     padding: "32px",
     maxWidth: "700px",
@@ -129,6 +146,24 @@ const Members = () => {
 
   return (
     <div style={pageStyle}>
+
+      {/* Back button */}
+      <button
+        onClick={() => navigate('/dashboard')}
+        style={{
+          marginBottom: "20px",
+          padding: "8px 16px",
+          background: "transparent",
+          border: "1px solid #e0c9b4",
+          borderRadius: "8px",
+          color: "#8b6b58",
+          cursor: "pointer",
+          fontSize: "14px",
+        }}
+      >
+        ← Back to Dashboard
+      </button>
+
       <h1 style={{ fontSize: "22px", fontWeight: "800", color: "#2c1810", marginBottom: "6px" }}>
         👨‍👩‍👧 Household Members
       </h1>
@@ -219,7 +254,7 @@ const Members = () => {
 
       {/* Leave household (members only) */}
       {!isAdmin && (
-        <div style={{ textAlign: "center" }}>
+        <div style={{ textAlign: "center", marginBottom: "16px" }}>
           <button
             onClick={handleLeave}
             style={{
@@ -233,7 +268,40 @@ const Members = () => {
               cursor: "pointer",
             }}
           >
-            Leave Household
+            🚪 Leave Household
+          </button>
+        </div>
+      )}
+
+      {/* Delete household (admin only) */}
+      {isAdmin && (
+        <div style={{
+          background: "#fef2f2",
+          border: "1px solid #fca5a5",
+          borderRadius: "14px",
+          padding: "20px 24px",
+          marginTop: "8px",
+        }}>
+          <div style={{ fontSize: "14px", fontWeight: "700", color: "#991b1b", marginBottom: "6px" }}>
+            ⚠️ Danger Zone
+          </div>
+          <div style={{ fontSize: "13px", color: "#6b7280", marginBottom: "14px" }}>
+            Deleting the household will remove all members and cannot be undone.
+          </div>
+          <button
+            onClick={handleDeleteHousehold}
+            style={{
+              padding: "10px 24px",
+              background: "#991b1b",
+              color: "white",
+              border: "none",
+              borderRadius: "8px",
+              fontSize: "14px",
+              fontWeight: "600",
+              cursor: "pointer",
+            }}
+          >
+            🗑️ Delete Household
           </button>
         </div>
       )}
