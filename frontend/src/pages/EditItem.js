@@ -29,7 +29,7 @@ function EditItem() {
 
   const fetchItem = async () => {
     try {
-      const res = await axiosInstance.get('/api/items/${id}',
+      const res = await axiosInstance.get(`/api/items/${id}`,
   {
     headers: { Authorization: `Bearer ${token}` },
   }
@@ -69,7 +69,7 @@ function EditItem() {
 
     try {
       setSaving(true);
-      await axiosInstance.put('/api/items/${id}',form,
+      await axiosInstance.put(`/api/items/${id}`,form,
   {
     headers: { Authorization: `Bearer ${token}` },
   }
